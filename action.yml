@@ -1,1 +1,26 @@
+name: Saykai CI Gate
+description: Run Saykai safety checks in CI and block on violations
 
+inputs:
+  api_key:
+    description: Saykai API key
+    required: true
+  spec_path:
+    description: Path to saykai.yml
+    required: false
+    default: saykai.yml
+  runner_version:
+    description: Runner version to use
+    required: false
+    default: latest
+
+runs:
+  using: composite
+  steps:
+    - name: Run Saykai
+      shell: bash
+      run: |
+        "${{ github.action_path }}/scripts/run.sh" \
+          "${{ inputs.api_key }}" \
+          "${{ inputs.spec_path }}" \
+          "${{ inputs.runner_version }}"
