@@ -2,25 +2,40 @@ name: Saykai CI Gate
 description: Run Saykai safety checks in CI and block on violations
 
 inputs:
-  api_key:
-    description: Saykai API key
-    required: true
+  runner_repo:
+    description: Repo that hosts the runner release assets (owner/name)
+    required: false
+    default: saykai-systems/runner
+  runner_version:
+    description: Runner release tag (e.g., v0.1.0) or 'latest'
+    required: false
+    default: latest
+  runner_token:
+    description: GitHub token with read access to runner repo releases (fine-grained token recommended)
+    required: false
+  runner_base_url:
+    description: Optional override download base (e.g., https://downloads.saykai.com/runner)
+    required: false
   spec_path:
     description: Path to saykai.yml
     required: false
     default: saykai.yml
-  runner_version:
-    description: Runner version to use
+  out_path:
+    description: Output Safety Pack path
     required: false
-    default: latest
+    default: safety_pack.json
 
 runs:
   using: composite
   steps:
     - name: Run Saykai
       shell: bash
+      env:
+        SAYKAI_RUNNER_TOKEN: ${{ inputs.runner_token }}
       run: |
         "${{ github.action_path }}/scripts/run.sh" \
-          "${{ inputs.api_key }}" \
+          "${{ inputs.runner_repo }}" \
+          "${{ inputs.runner_version }}" \
+          "${{ inputs.runner_base_url }}" \
           "${{ inputs.spec_path }}" \
-          "${{ inputs.runner_version }}"
+          "${{ inputs.out_path }}"
