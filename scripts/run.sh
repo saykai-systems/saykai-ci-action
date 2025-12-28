@@ -15,14 +15,14 @@ RUNNER_PATH="${BIN_DIR}/saykai"
 mkdir -p "$BIN_DIR"
 
 # Install runner
-"${ACTION_DIR}/install-runner.sh" \
+bash "${ACTION_DIR}/install-runner.sh" \
   "$RUNNER_REPO" \
   "$RUNNER_VERSION" \
   "$RUNNER_BASE_URL" \
   "$RUNNER_PATH"
 
 # Optional verification (safe to keep even if you don't have checksums yet)
-"${ACTION_DIR}/verify-runner.sh" "$RUNNER_PATH" || true
+bash "${ACTION_DIR}/verify-runner.sh" "$RUNNER_PATH" || true
 
 # Run
 echo "Running Saykai runner..."
