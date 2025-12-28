@@ -51,6 +51,20 @@ download_from_github_release() {
     release_json="$(curl -fsSL -H "Authorization: Bearer ${token}" -H "X-GitHub-Api-Version: 2022-11-28" \
       "${api}/tags/${version}")"
   fi
+  # --- DEBUG: validate GitHub API response ---
+if [[ -z "$release_json" ]]; then
+  echo "ERROR: Empty response from GitHub API"
+  exit 1
+fi
+
+# Optional but very helpful
+if [[ "${release_json:0:1}" != "{" ]]; then
+  echo "ERROR: GitHub API did not return JSON"
+  echo "First 300 chars of response:"
+  echo "${release_json:0:300}"
+  exit 1
+fi
+# --- END DEBUG ---
 
     # Extract the asset id for our target asset name
   local asset_id
