@@ -52,9 +52,26 @@ download_from_github_release() {
       "${api}/tags/${version}")"
   fi
 
-  # Extract the asset id for our target asset name
+    # Extract the asset id for our target asset name
   local asset_id
-  asset_id="$(python - <<'PY'
+  asset_id="$(
+    python - "$ASSET_NAME" <<'PY'
+import json,sys
+name=sys.argv[1]
+data=json.load(sys.stdin)
+for a in data.get("assets", []):
+    if a.get("name") == name:
+        print(a.get("id"))
+        raise SystemExit(0)
+raise SystemExit(1)
+PY
+  <<<"$release_json"
+  )" || {
+    echo "Could not find asset '${ASSET_NAME}' in release ${version} for ${repo}"
+    echo "Release response (first 300 chars): ${release_json:0:300}"
+    exit 1
+  }
+
 import json,sys
 data=json.load(sys.stdin)
 name=sys.argv[1]
