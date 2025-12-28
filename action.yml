@@ -33,7 +33,7 @@ runs:
       env:
         SAYKAI_RUNNER_TOKEN: ${{ inputs.runner_token }}
       run: |
-        "${{ github.action_path }}/scripts/run.sh" \
+        bash "${{ github.action_path }}/scripts/run.sh" \
           "${{ inputs.runner_repo }}" \
           "${{ inputs.runner_version }}" \
           "${{ inputs.runner_base_url }}" \
