@@ -115,6 +115,7 @@ rules:
     remediation: "Reduce acc_lim_y or update the customer-approved policy limit after safety review."
 
   nav2_rotational_accel_exceeded:
+    enabled: true
     severity: high
     action: block
     source: customer_approved
@@ -122,6 +123,7 @@ rules:
     remediation: Reduce acc_lim_theta or update the customer-approved policy limit after safety review.
 
   nav2_inflation_radius_vs_footprint_risk:
+    enabled: true
     severity: high
     action: block
     source: customer_approved
@@ -130,6 +132,7 @@ rules:
 
   # Phase 5
   nav2_goal_tolerance_vs_footprint_risk:
+    enabled: true
     severity: high
     action: block
     source: customer_approved
